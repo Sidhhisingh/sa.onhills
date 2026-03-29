@@ -1,0 +1,82 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div>SA.ONHILLS</div>
+  <div>
+    <a href="/">Home</a>
+    <a href="/photos">Photos</a>
+    <a href="/music">Music</a>
+    <a href="/poetry">Poetry</a>
+    <a href="/sadil">Sadil 🔒</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <h1>Sahil’s World 💖</h1>
+    <p>Fan page by Siddhi</p>
+  </div>
+</div>
+
+<!-- POSTS SECTION -->
+<div class="section light">
+
+  <h2 style="text-align:center;">Posts 📸</h2>
+
+  <div class="card">
+    <form method="POST" enctype="multipart/form-data">
+      <textarea name="message" placeholder="Write something..."></textarea>
+      <input type="file" name="photo">
+      <button>Post</button>
+    </form>
+  </div>
+
+  {% for post in posts %}
+  <div class="card">
+    <p>{{ post[1] }}</p>
+
+    {% if post[2] and post[2] != "" %}
+  <img src="{{ url_for('static', filename='uploads/' + post[2]) }}" onclick="openImage(this.src)">
+{% endif %}
+
+    <!-- DELETE BUTTON -->
+    <a href="/delete_post/{{ post[0] }}">
+      <button style="background:red;">Delete</button>
+    </a>
+  </div>
+{% endfor %}
+</div>
+
+<!-- MUSIC SECTION -->
+<div class="section dark">
+
+  <h2 style="text-align:center;">Music 🎵</h2>
+
+  <div class="grid">
+    {% for song in songs %}
+      {% if song[1] %}
+        <div class="card">
+          <audio controls>
+            <source src="{{ url_for('static', filename='uploads/' + song[1]) }}">
+          </audio>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- POETRY SECTION -->
+<div class="section light">
+
+  <h2 style="text-align:center;">Poetry ✍️</h2>
+
+  {% for p in poetry %}
+    <div class="card">
+      <p>{{ p[1] }}</p>
+    </div>
+  {% endfor %}
+
+</div>

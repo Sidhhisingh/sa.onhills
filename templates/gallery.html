@@ -1,0 +1,5 @@
+<h1>Photos 📸</h1>
+
+{% for file in files %}
+  <img src="{{ url_for('static', filename='uploads/' + file) }}" width="200">
+{% endfor %}

@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="navbar">
+  <div>Poetry ✍️</div>
+  <div><a href="/">Home</a></div>
+</div>
+
+<div class="section light">
+
+  <div class="card">
+    <form method="POST">
+      <textarea name="text" placeholder="Write poetry..."></textarea>
+      <button>Post</button>
+    </form>
+  </div>
+
+  {% for p in data %}
+    <div class="card">
+      <p>{{ p[1] }}</p>
+
+      <a href="/delete_poetry/{{ p[0] }}">
+        <button style="background:red;">Delete</button>
+      </a>
+    </div>
+  {% endfor %}
+
+</div>

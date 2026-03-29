@@ -1,0 +1,54 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<div class="navbar">
+  <div>Photos 📸</div>
+  <div><a href="/">Home</a></div>
+</div>
+
+<div class="section dark">
+
+  <div class="grid">
+    {% for p in data %}
+      {% if p[2] %}
+        <div class="card">
+          <img src="{{ url_for('static', filename='uploads/' + p[2]) }}" onclick="openImage(this.src)">
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- FULLSCREEN -->
+<div id="popup" onclick="closeImage()">
+  <img id="popup-img">
+</div>
+
+<script>
+function openImage(src) {
+  document.getElementById("popup").style.display = "flex";
+  document.getElementById("popup-img").src = src;
+}
+
+function closeImage() {
+  document.getElementById("popup").style.display = "none";
+}
+</script>
+
+<style>
+#popup {
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  justify-content:center;
+  align-items:center;
+}
+#popup img {
+  max-width:90%;
+  max-height:90%;
+}
+</style>
