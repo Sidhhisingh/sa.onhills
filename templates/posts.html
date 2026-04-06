@@ -1,30 +1,56 @@
-<h1>Posts 💙</h1>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Posts</title>
 
+</head>
+<body>
+
+<h1>💬 Posts</h1>
+
+<!-- POST FORM -->
 <form method="POST" enctype="multipart/form-data">
-  <input type="text" name="message" placeholder="Write something...">
-  <input type="file" name="photo" accept="image/*,video/*">
-  <button>Post</button>
+    {% if not session.get('username') %}
+        <input type="text" name="username" placeholder="Enter your name" required><br><br>
+    {% endif %}
+
+    <input type="text" name="message" placeholder="Write something..."><br><br>
+
+    <input type="file" name="photo"><br><br>
+    <input type="file" name="video"><br><br>
+
+    <button type="submit">Post</button>
 </form>
 
 <hr>
 
-{% for post in data %}
-  <div style="margin-bottom:20px; padding:10px; border:1px solid #ccc;">
+<!-- POSTS -->
+{% for post in posts %}
+<div class="post">
+
+    <h3>👤 {{ post[4] }}</h3>
 
     <p>{{ post[1] }}</p>
 
     {% if post[2] %}
-      {% if post[2].endswith('.mp4') %}
-        <video width="250" controls>
-          <source src="{{ url_for('static', filename='uploads/' + post[2]) }}">
-        </video>
-      {% else %}
-        <img src="{{ url_for('static', filename='uploads/' + post[2]) }}" width="200">
-      {% endif %}
+        <img src="{{ url_for('static', filename='uploads/' + post[2]) }}">
     {% endif %}
 
-    <br><br>
-    <a href="/delete_post/{{ post[0] }}" style="color:red;">Delete ❌</a>
+    {% if post[3] %}
+        <video controls>
+            <source src="{{ url_for('static', filename='uploads/' + post[3]) }}">
+        </video>
+    {% endif %}
 
-  </div>
+    <!-- DELETE -->
+    {% if session.get('username') == post[4] %}
+    <form action="/delete_post/{{post[0]}}" method="POST">
+        <button>Delete</button>
+    </form>
+    {% endif %}
+
+</div>
 {% endfor %}
+
+</body>
+</html>

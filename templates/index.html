@@ -1,82 +1,71 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>sa.onhills - Sahil's World 💖</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 
-<!-- NAVBAR -->
 <div class="navbar">
-  <div>SA.ONHILLS</div>
-  <div>
-    <a href="/">Home</a>
-    <a href="/photos">Photos</a>
-    <a href="/music">Music</a>
-    <a href="/poetry">Poetry</a>
-    <a href="/sadil">Sadil 🔒</a>
-  </div>
-</div>
-
-<!-- HERO -->
-<div class="hero">
-  <div>
-    <h1>Sahil’s World 💖</h1>
-    <p>Fan page by Siddhi</p>
-  </div>
-</div>
-
-<!-- POSTS SECTION -->
-<div class="section light">
-
-  <h2 style="text-align:center;">Posts 📸</h2>
-
-  <div class="card">
-    <form method="POST" enctype="multipart/form-data">
-      <textarea name="message" placeholder="Write something..."></textarea>
-      <input type="file" name="photo">
-      <button>Post</button>
-    </form>
-  </div>
-
-  {% for post in posts %}
-  <div class="card">
-    <p>{{ post[1] }}</p>
-
-    {% if post[2] and post[2] != "" %}
-  <img src="{{ url_for('static', filename='uploads/' + post[2]) }}" onclick="openImage(this.src)">
-{% endif %}
-
-    <!-- DELETE BUTTON -->
-    <a href="/delete_post/{{ post[0] }}">
-      <button style="background:red;">Delete</button>
-    </a>
-  </div>
-{% endfor %}
-</div>
-
-<!-- MUSIC SECTION -->
-<div class="section dark">
-
-  <h2 style="text-align:center;">Music 🎵</h2>
-
-  <div class="grid">
-    {% for song in songs %}
-      {% if song[1] %}
-        <div class="card">
-          <audio controls>
-            <source src="{{ url_for('static', filename='uploads/' + song[1]) }}">
-          </audio>
-        </div>
-      {% endif %}
-    {% endfor %}
-  </div>
-
-</div>
-
-<!-- POETRY SECTION -->
-<div class="section light">
-
-  <h2 style="text-align:center;">Poetry ✍️</h2>
-
-  {% for p in poetry %}
-    <div class="card">
-      <p>{{ p[1] }}</p>
+    <h2>🌍 Sahil's World</h2>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/photos">Photos</a>
+        <a href="/videos">Videos</a>
+        <a href="/poetry">Poetry✍️</a>
+        <a href="/music">Music🎵</a>
+        <a href="/sadil">Sadil 🔒</a>
     </div>
-  {% endfor %}
+</div>
+
+<div class="container" style="padding-top: 20px;">
+    
+    <div class="post-box">
+        <h3 style="color:white; margin-bottom: 15px;">Create a New Post ✨</h3>
+        <form method="POST" enctype="multipart/form-data">
+            
+            <input type="text" name="username" placeholder="Your name" required>
+            <textarea name="message" placeholder="Write something special for Sahil... 💖"></textarea>
+
+            <div class="common-upload" style="background: rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px; margin-bottom: 15px; text-align: left;">
+                <label style="color: white; font-weight: bold; font-size: 0.9rem;">Upload Photo/Video:</label><br><br>
+                <input type="file" name="photo" accept="image/*,video/*" style="background:transparent !important; color:white !important; padding: 0 !important; width: 100% !important;">
+            </div>
+
+            <button type="submit">Post 🚀</button>
+
+        </form>
+    </div>
+
+
+    <div class="feed">
+        <h2 style="color:white; margin-top: 30px;">Community Posts 🌍</h2>
+        {% for post in posts %}
+        <div class="post">
+            <h3 class="username" style="font-size: 1.1rem;">👤 {{ post[4] }}</h3>
+            <p style="font-size: 1rem;">{{ post[1] }}</p>
+
+            {% if post[2] %}
+                <img src="{{ url_for('static', filename='uploads/' + post[2]) }}" class="post-img" onclick="window.open(this.src)" style="cursor:pointer;">
+            {% endif %}
+
+            {% if post[3] %}
+                <video controls class="post-video" style="width: 100%;">
+                    <source src="{{ url_for('static', filename='uploads/' + post[3]) }}">
+                </video>
+            {% endif %}
+
+            {% if session.get('username') == post[4] %}
+                <form action="/delete_post/{{post[0]}}" method="POST">
+                    <button style="background:red; padding: 5px 10px; font-size: 12px; border-radius: 10px; border: none; margin-top: 10px;">Delete ❌</button>
+                </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
 
 </div>
+
+</body>
+</html>

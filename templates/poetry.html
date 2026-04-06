@@ -1,27 +1,28 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-<div class="navbar">
-  <div>Poetry ✍️</div>
-  <div><a href="/">Home</a></div>
-</div>
-
-<div class="section light">
-
-  <div class="card">
-    <form method="POST">
-      <textarea name="text" placeholder="Write poetry..."></textarea>
-      <button>Post</button>
-    </form>
-  </div>
-
-  {% for p in data %}
-    <div class="card">
-      <p>{{ p[1] }}</p>
-
-      <a href="/delete_poetry/{{ p[0] }}">
-        <button style="background:red;">Delete</button>
-      </a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Poetry - sa.onhills</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar"><a href="/">Home</a></div>
+    <h1>✍️ Poetry</h1>
+    <div class="post-box">
+        <form method="POST">
+            <input type="text" name="username" placeholder="Your name" required>
+            <textarea name="text" placeholder="Write your poem..."></textarea>
+            <button>Post Poetry</button>
+        </form>
     </div>
-  {% endfor %}
-
-</div>
+    {% for p in data %}
+    <div class="card">
+        <p><b>{{ p[2] }}</b></p>
+        <p>{{ p[1] }}</p>
+        <form action="/delete_poetry/{{ p[0] }}" method="POST">
+            <input type="hidden" name="username" value="{{ p[2] }}">
+            <button style="background:red;">Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+</body>
+</html>

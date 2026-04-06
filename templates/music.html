@@ -1,34 +1,29 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-<div class="navbar">
-  <div>Music 🎵</div>
-  <div><a href="/">Home</a></div>
-</div>
-
-<div class="section dark">
-
-  <div class="card">
-    <form method="POST" enctype="multipart/form-data">
-      <input type="text" name="title" placeholder="Song Name">
-      <input type="file" name="song">
-      <button>Upload</button>
-    </form>
-  </div>
-
-  {% for song in songs %}
-    {% if song[2] %}
-      <div class="card">
-        <h3>{{ song[1] }}</h3>
-
-        <audio controls>
-          <source src="{{ url_for('static', filename='uploads/' + song[2]) }}">
-        </audio>
-
-        <a href="/delete_song/{{ song[0] }}">
-          <button style="background:red;">Delete</button>
-        </a>
-      </div>
-    {% endif %}
-  {% endfor %}
-
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music - sa.onhills</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="navbar"><a href="/">Home</a></div>
+    <h1>🎵 Music</h1>
+    <div class="post-box">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="text" name="username" placeholder="Your name" required>
+            <input type="text" name="title" placeholder="Song name">
+            <input type="file" name="song">
+            <button>Upload</button>
+        </form>
+    </div>
+    {% for s in songs %}
+    <div class="card">
+        <p><b>{{ s[3] }}</b> - {{ s[1] }}</p>
+        <audio controls><source src="{{ url_for('static', filename='uploads/' + s[2]) }}"></audio>
+        <form action="/delete_song/{{ s[0] }}" method="POST">
+            <input type="hidden" name="username" value="{{ s[3] }}">
+            <button style="background:red;">Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+</body>
+</html>

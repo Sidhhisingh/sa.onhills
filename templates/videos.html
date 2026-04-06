@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Videos</title>
+
+</head>
+<body>
+
+<h1>🎬 Videos</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="video" required>
+    <button type="submit">Upload</button>
+</form>
+
+{% for v in data %}
+<div>
+    <video controls>
+        <source src="{{ url_for('static', filename='uploads/' + v[3]) }}">
+    </video>
+
+    <form action="/delete_post/{{v[0]}}" method="POST">
+        <button>Delete</button>
+    </form>
+</div>
+{% endfor %}
+
+</body>
+</html>

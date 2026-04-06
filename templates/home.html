@@ -1,24 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>sa.onhills 💖</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>sa.onhills 💖</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body class="home">
 
-<div class="hero">
-  <h1>💖 Welcome to Sahil’s World 💙</h1>
-  <p>someone's whole world✨</p>
-</div>
+    <div class="hero" style="padding-top: 80px;">
+        <div class="hero-card">
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">💖 Welcome to Sahil’s World 💙</h1>
+            <p style="font-style: italic; font-size: 1.2rem; opacity: 0.9;">here everthing is about him only ✨</p>
+        </div>
+    </div>
 
-<div class="menu">
-  <a href="/posts">📝 Posts</a>
-  <a href="/gallery">📸 Photos</a>
-  <a href="/poetry">✍️ Poetry</a>
-  <a href="/music">🎵 Music</a>
-  <a href="/sadil">🔐 Sadil</a>
-</div>
+    <div class="menu-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 40px; padding: 20px;">
+        
+        <a href="/posts" class="card" style="width: 140px; text-decoration: none; margin: 0; padding: 20px;">
+            <div style="font-size: 2rem;">📝</div>
+            <div style="font-weight: bold; margin-top: 10px;">Posts</div>
+        </a>
+
+        <a href="/photos" class="card" style="width: 140px; text-decoration: none; margin: 0; padding: 20px;">
+            <div style="font-size: 2rem;">📸</div>
+            <div style="font-weight: bold; margin-top: 10px;">Photos</div>
+        </a>
+
+        <a href="/poetry" class="card" style="width: 140px; text-decoration: none; margin: 0; padding: 20px;">
+            <div style="font-size: 2rem;">✍️</div>
+            <div style="font-weight: bold; margin-top: 10px;">Poetry</div>
+        </a>
+
+        <a href="/music" class="card" style="width: 140px; text-decoration: none; margin: 0; padding: 20px;">
+            <div style="font-size: 2rem;">🎵</div>
+            <div style="font-weight: bold; margin-top: 10px;">Music</div>
+        </a>
+
+        <a href="/sadil" class="card" style="width: 140px; text-decoration: none; margin: 0; padding: 20px;">
+            <div style="font-size: 2rem;">🔐</div>
+            <div style="font-weight: bold; margin-top: 10px;">Sadil</div>
+        </a>
+
+    </div>
 
 </body>
-</html>
+</html>s
