@@ -106,20 +106,45 @@ def music():
     conn.close()
     return render_template('music.html', songs=songs)
 
+@app.route('/photos')
+def photos():
+    conn = sqlite3.connect('database.db')
+    cur = conn.cursor()
+    # Sirf images uthao (image column index 2 par hai)
+    cur.execute("SELECT image FROM posts WHERE image IS NOT NULL AND image != '' ORDER BY id DESC")
+    data = cur.fetchall()
+    files = [row[0] for row in data] # HTML list format ke liye
+    conn.close()
+    return render_template('photos.html', files=files)
+
+@app.route('/videos')
+def videos():
+    conn = sqlite3.connect('database.db')
+    cur = conn.cursor()
+    # Videos uthao (video column index 3 par hai)
+    cur.execute("SELECT * FROM posts WHERE video IS NOT NULL AND video != '' ORDER BY id DESC")
+    data = cur.fetchall()
+    conn.close()
+    return render_template('videos.html', data=data)
+
 @app.route('/sadil', methods=['GET', 'POST'])
 def sadil():
     username = session.get('username')
-    if not username: return redirect('/')
+    if not username: return redirect('/') # Pehle naam enter karna zaruri hai
+
     error = None
+    # Agar abhi tak password nahi dala hai
     if not session.get('is_sadil'):
         if request.method == 'POST':
             password = request.form.get('password')
-            if password == "sadil123":
+            if password == "sadil123": # Tera password
                 session['is_sadil'] = True
                 return redirect('/sadil')
             else:
-                error = "Aap Sadil hain? Nahi na..."
+                error = "Aap Sadil hain? Nahi na... toh chaliye jaiye yahan se!"
         return render_template('login.html', error=error)
+
+    # Agar password dal chuka hai, toh vault dikhao
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()
     cur.execute("SELECT * FROM private_posts ORDER BY id DESC")
@@ -127,29 +152,37 @@ def sadil():
     conn.close()
     return render_template('sadil.html', data=data)
 
-@app.route('/delete_post/<int:id>', methods=['POST'])
-def delete_post(id):
-    username = session.get('username')
+@app.route('/upload_private', methods=['POST'])
+def upload_private():
+    if not session.get('is_sadil'): return redirect('/sadil')
+    
+    file = request.files.get('file')
+    if file and file.filename != "":
+        filename = secure_filename(file.filename)
+        filename = str(int(time.time())) + "_" + filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+        conn = sqlite3.connect('database.db')
+        cur = conn.cursor()
+        cur.execute("INSERT INTO private_posts (file) VALUES (?)", (filename,))
+        conn.commit()
+        conn.close()
+    return redirect('/sadil')
+
+@app.route('/delete_private/<int:id>', methods=['POST'])
+def delete_private(id):
+    if not session.get('is_sadil'): return redirect('/sadil')
+    
     conn = sqlite3.connect('database.db')
     cur = conn.cursor()
-    cur.execute("SELECT username FROM posts WHERE id=?", (id,))
-    owner = cur.fetchone()
-    if owner and owner[0] == username:
-        cur.execute("DELETE FROM posts WHERE id=?", (id,))
-        conn.commit()
+    cur.execute("DELETE FROM private_posts WHERE id=?", (id,))
+    conn.commit()
     conn.close()
-    return redirect('/')
+    return redirect('/sadil')
 
 # ... (Baki delete routes wahi purane) ...
 
-@app.route('/photos')
-def photos():
-    conn = sqlite3.connect('database.db')
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM posts WHERE image IS NOT NULL AND image != '' ORDER BY id DESC")
-    data = cur.fetchall()
-    conn.close()
-    return render_template('photos.html', data=data) 
+
 
 @app.route('/delete_poetry/<int:id>', methods=['POST'])
 def delete_poetry(id):
@@ -182,39 +215,6 @@ def delete_song(id):
         conn.commit()
     conn.close()
     return redirect('/music')
-
-# ---------- DELETE PRIVATE (SADIL VAULT) ----------
-@app.route('/delete_private/<int:id>', methods=['POST'])
-def delete_private(id):
-    # Sadil ka vault hai toh isme username check ki zarurat nahi, 
-    # bas login hona chahiye
-    if not session.get('is_sadil'):
-        return redirect('/sadil')
-        
-    conn = sqlite3.connect('database.db')
-    cur = conn.cursor()
-    cur.execute("DELETE FROM private_posts WHERE id=?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect('/sadil')
-
-@app.route('/videos', methods=['GET', 'POST'])
-def videos():
-    username = session.get('username', 'anonymous')
-    conn = sqlite3.connect('database.db')
-    cur = conn.cursor()
-    if request.method == 'POST':
-        video = request.files.get('video')
-        if video and video.filename != "":
-            filename = secure_filename(video.filename)
-            filename = str(int(time.time())) + "_" + filename
-            video.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            cur.execute("INSERT INTO posts (message, image, video, username) VALUES (?, ?, ?, ?)", ("", "", filename, username))
-            conn.commit()
-    cur.execute("SELECT * FROM posts WHERE video IS NOT NULL AND video != '' ORDER BY id DESC")
-    data = cur.fetchall()
-    conn.close()
-    return render_template('videos.html', data=data)
 
 if __name__ == '__main__':
     app.run(debug=True)
