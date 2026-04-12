@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Locked 🔐</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Locked 🔒</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { background: linear-gradient(135deg, #0f0f1a 0%, #301934 100%); font-family: 'Poppins', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; color: white; }
+        .login-card { background: #1c1c2d; padding: 40px; border-radius: 25px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid #333; width: 320px; }
+        input { width: 90%; padding: 12px; margin: 20px 0; border-radius: 10px; border: none; background: #252538; color: white; text-align: center; }
+        button { background: #8f94fb; border: none; padding: 12px 30px; color: white; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; }
+        .error-msg { color: #ff4b5c; font-size: 13px; margin-top: 15px; font-weight: bold; }
+    </style>
 </head>
-<body style="display:flex; justify-content:center; align-items:center; height:100vh;">
-    <div class="card" style="width:300px; padding:40px;">
-        <h2 style="color:white;">🔐 Private</h2>
-        <form method="POST" action="/sadil">
-            <input type="password" name="password" placeholder="Password daalo" required 
-                   style="width:90%; padding:10px; margin-bottom:20px; border-radius:5px; border:none;">
-            <button type="submit">Unlock</button>
+<body>
+    <div class="login-card">
+        <h1>🔐 Swagat hai...</h1>
+        <form method="POST">
+            <input type="password" name="password" placeholder="Password daalo" required>
+            <button type="submit">Unlock Vault</button>
         </form>
+        {% if error %}
+            <div class="error-msg">{{ error }}</div>
+        {% endif %}
     </div>
 </body>
 </html>

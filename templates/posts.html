@@ -2,6 +2,86 @@
 <html>
 <head>
 <title>Posts</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+        background: #0f0f1a; /* Dark Theme for all pages */
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 { color: #fff; margin-bottom: 30px; font-size: 28px; }
+
+    /* Navigation Bar Fix */
+    nav, .menu {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 50px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #8f94fb;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    nav a:hover { color: #fff; }
+
+    /* Content Cards (Photos/Videos/Poetry ke liye) */
+    .content-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 25px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .item-card {
+        background: #1c1c2d;
+        padding: 20px;
+        border-radius: 20px;
+        border: 1px solid #333;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    }
+
+    img, video {
+        width: 100%;
+        border-radius: 15px;
+        margin-bottom: 15px;
+    }
+
+    /* Poetry Text Style */
+    .poetry-text {
+        font-style: italic;
+        line-height: 1.6;
+        color: #d1d1d1;
+        white-space: pre-wrap; /* Poetry ki lines preserve karne ke liye */
+    }
+
+    /* Delete Button Fix */
+    .delete-btn {
+        background: #ff4b5c;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 13px;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+
+    .delete-btn:hover { background: #ff0000; }
+</style>
 
 </head>
 <body>

@@ -1,31 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Photos - sa.onhills</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Photos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { background: #0f0f1a; font-family: 'Poppins', sans-serif; color: white; text-align: center; padding: 20px; }
+        .navbar { margin-bottom: 30px; }
+        .navbar a { color: #8f94fb; text-decoration: none; border: 1px solid #8f94fb; padding: 5px 15px; border-radius: 20px; }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
+        .item-card { background: #1c1c2d; padding: 10px; border-radius: 15px; border: 1px solid #333; }
+        img { width: 100%; border-radius: 10px; cursor: pointer; }
+    </style>
 </head>
 <body>
-
-    <div class="navbar"><a href="/">Home</a></div>
-
-    <h1 style="color:white;text-align:center;">📸 Photos Gallery</h1>
-
-    <div class="grid">
-    {% for p in data %}
-        <img src="{{ url_for('static', filename='uploads/' + p[2]) }}" onclick="openImg(this.src)">
-    {% endfor %}
+    <div class="navbar"><a href="/">← Home</a></div>
+    <h1>📸 Photos Gallery</h1>
+    <div class="content-grid">
+        {% for file in files %}
+        <div class="item-card">
+            <img src="{{ url_for('static', filename='uploads/' + file) }}" onclick="window.open(this.src)">
+        </div>
+        {% endfor %}
     </div>
-
-    <div id="popup" onclick="this.style.display='none'">
-        <img id="big">
-    </div>
-
-    <script>
-    function openImg(src){
-        document.getElementById('popup').style.display='flex';
-        document.getElementById('big').src = src;
-    }
-    </script>
-
 </body>
 </html>

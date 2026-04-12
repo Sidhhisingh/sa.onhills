@@ -1,33 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sadil</title>
+    <title>Sadil Private - Vault</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { background: #0f0f1a; font-family: 'Poppins', sans-serif; color: white; text-align: center; padding: 20px; margin: 0; }
+        
+        .navbar { margin-bottom: 30px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 50px; display: inline-block; }
+        .navbar a { color: #8f94fb; text-decoration: none; padding: 0 20px; font-weight: bold; }
 
+        .vault-card { background: #1c1c2d; padding: 30px; border-radius: 25px; max-width: 400px; margin: 0 auto 40px; border: 1px solid #333; box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        
+        input[type="file"] { background: #252538; padding: 10px; border-radius: 10px; margin-bottom: 15px; width: 80%; color: #888; border: 1px solid #444; }
+        .upload-btn { background: linear-gradient(to right, #8f94fb, #4e54c8); border: none; padding: 12px 30px; color: white; border-radius: 12px; font-weight: bold; cursor: pointer; width: 90%; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .media-card { background: #1c1c2d; padding: 15px; border-radius: 20px; border: 1px solid #333; }
+        img, video { width: 100%; border-radius: 15px; margin-bottom: 10px; }
+        
+        .delete-btn { background: #ff4b5c; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: 0.3s; }
+        .delete-btn:hover { background: #ff0000; box-shadow: 0 0 10px rgba(255,75,92,0.5); }
+    </style>
 </head>
 <body>
 
-<h1>🔒 Sadil Private</h1>
+    <div class="navbar"><a href="/">🏠 Back to Home (Lock Vault)</a></div>
 
-<form action="/upload_private" method="POST" enctype="multipart/form-data">
-    <input type="file" name="file" required>
-    <button>Upload</button>
-</form>
+    <div class="vault-card">
+        <h1>🔒 Sadil Private</h1>
+        <form action="/upload_private" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button class="upload-btn">Upload to Vault 🚀</button> 
+        </form>
+    </div>
 
-{% for d in data %}
-<div>
-    {% if d[1].endswith('.mp4') %}
-        <video controls>
-            <source src="{{ url_for('static', filename='uploads/' + d[1]) }}">
-        </video>
-    {% else %}
-        <img src="{{ url_for('static', filename='uploads/' + d[1]) }}">
-    {% endif %}
+    <div class="grid">
+        {% for d in data %}
+        <div class="media-card">
+            {% if d[1].lower().endswith(('.mp4', '.mov', '.avi')) %}
+                <video controls>
+                    <source src="{{ url_for('static', filename='uploads/' + d[1]) }}">
+                </video>
+            {% else %}
+                <img src="{{ url_for('static', filename='uploads/' + d[1]) }}">
+            {% endif %}
 
-    <form action="/delete_private/{{d[0]}}" method="POST">
-        <button>Delete</button>
-    </form>
-</div>
-{% endfor %}
+            <form action="/delete_private/{{d[0]}}" method="POST">
+                <button class="delete-btn">Remove from Vault</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Back button dabane par bhi lock kaam karega
+        window.onpageshow = function(event) {
+            if (event.persisted) { window.location.reload(); }
+        };
+    </script>
 
 </body>
 </html>

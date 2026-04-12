@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Videos</title>
-
+    <title>Videos</title>
+    <style>
+        /* Tera wahi CSS jo tune paste kiya tha */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body { background: #0f0f1a; font-family: 'Poppins', sans-serif; color: white; text-align: center; padding: 20px; }
+        .navbar { margin-bottom: 30px; }
+        .navbar a { color: #8f94fb; text-decoration: none; border: 1px solid #8f94fb; padding: 5px 15px; border-radius: 20px; }
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .item-card { background: #1c1c2d; padding: 15px; border-radius: 20px; border: 1px solid #333; }
+        video { width: 100%; border-radius: 10px; }
+        .delete-btn { background: #ff4b5c; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; }
+    </style>
 </head>
 <body>
+    <div class="navbar"><a href="/">← Home</a></div>
+    <h1>🎬 Videos</h1>
 
-<h1>🎬 Videos</h1>
-
-<form method="POST" enctype="multipart/form-data">
-    <input type="file" name="video" required>
-    <button type="submit">Upload</button>
-</form>
-
-{% for v in data %}
-<div>
-    <video controls>
-        <source src="{{ url_for('static', filename='uploads/' + v[3]) }}">
-    </video>
-
-    <form action="/delete_post/{{v[0]}}" method="POST">
-        <button>Delete</button>
-    </form>
-</div>
-{% endfor %}
-
+    <div class="content-grid">
+        {% for v in data %}
+        <div class="item-card">
+            <video controls>
+                <source src="{{ url_for('static', filename='uploads/' + v[3]) }}">
+            </video>
+            <form action="/delete_post/{{v[0]}}" method="POST">
+                <button class="delete-btn">Delete Video</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
